@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-slate-800 text-slate-300 mt-16">
+  <div class="max-w-5xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <p class="text-white font-bold text-base mb-2">はたらくインサイト</p>
+        <p class="text-sm leading-relaxed text-slate-400">
+          人材・採用・転職・働き方に関するデータを独自分析。統計と現場感覚をもとに、仕事と人材の「今」をわかりやすく届けます。
+        </p>
+      </div>
+      <div>
+        <p class="text-white font-semibold text-sm mb-3">カテゴリ</p>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/category/tenshoku" class="text-slate-400 hover:text-white no-underline">転職</a></li>
+          <li><a href="/category/saiyo" class="text-slate-400 hover:text-white no-underline">採用</a></li>
+          <li><a href="/category/nenshu" class="text-slate-400 hover:text-white no-underline">年収</a></li>
+          <li><a href="/category/career" class="text-slate-400 hover:text-white no-underline">キャリア</a></li>
+          <li><a href="/category/hatarakikata" class="text-slate-400 hover:text-white no-underline">働き方</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-semibold text-sm mb-3">サイト情報</p>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/about" class="text-slate-400 hover:text-white no-underline">このサイトについて</a></li>
+          <li><a href="/privacy" class="text-slate-400 hover:text-white no-underline">プライバシーポリシー</a></li>
+          <li><a href="/disclaimer" class="text-slate-400 hover:text-white no-underline">免責事項</a></li>
+          <li>
+            <a href="https://x.com/hatarakuinsight" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white no-underline flex items-center gap-1">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.776-8.894L2.25 2.25h6.958l4.266 5.638L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              X (Twitter)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-2">
+      <p class="text-xs text-slate-500">&copy; {year} はたらくインサイト All Rights Reserved.</p>
+      <p class="text-xs text-slate-600">
+        当サイトはアフィリエイト広告を利用しています。
+      </p>
+    </div>
+  </div>
+</footer>

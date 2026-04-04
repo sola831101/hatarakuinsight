@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary: #1d4ed8;
+    --color-accent: #0ea5e9;
+    --color-text: #1e293b;
+    --color-muted: #64748b;
+    --color-bg: #f8fafc;
+    --color-card: #ffffff;
+    --color-border: #e2e8f0;
+  }
+
+  html {
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    opacity: 0.8;
+  }
+}
+
+/* 記事本文スタイル */
+.article-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0.75rem;
+  border-left: 4px solid #1d4ed8;
+  color: #1e293b;
+}
+
+.article-body h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+}
+
+.article-body p {
+  margin-bottom: 1.25rem;
+}
+
+.article-body ul, .article-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.article-body ul li {
+  list-style-type: disc;
+  margin-bottom: 0.5rem;
+}
+
+.article-body ol li {
+  list-style-type: decimal;
+  margin-bottom: 0.5rem;
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.article-body table th {
+  background-color: #1d4ed8;
+  color: white;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.article-body table td {
+  padding: 0.6rem 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.article-body table tr:nth-child(even) td {
+  background-color: #f1f5f9;
+}
+
+.article-body blockquote {
+  border-left: 4px solid #0ea5e9;
+  padding: 0.75rem 1rem;
+  background-color: #f0f9ff;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #64748b;
+}
+
+.article-body strong {
+  font-weight: 700;
+}
+
+.article-body code {
+  background-color: #f1f5f9;
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.data-source {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}

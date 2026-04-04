@@ -1,0 +1,42 @@
+{
+  "_comment": "アフィリエイトリンク管理ファイル。ASP審査通過後にURLを差し替えてください。",
+  "agents": [
+    {
+      "name": "doda",
+      "url": "#affiliate-link-doda",
+      "asp": "A8.net",
+      "reward": "CPA",
+      "categories": ["tenshoku", "career", "nenshu"]
+    },
+    {
+      "name": "リクルートエージェント",
+      "url": "#affiliate-link-recruit-agent",
+      "asp": "A8.net",
+      "reward": "CPA",
+      "categories": ["tenshoku", "career"]
+    },
+    {
+      "name": "マイナビエージェント",
+      "url": "#affiliate-link-mynavi",
+      "asp": "バリューコマース",
+      "reward": "CPA",
+      "categories": ["tenshoku", "shinsotsu"]
+    }
+  ],
+  "salary": [
+    {
+      "name": "doda年収査定",
+      "url": "#affiliate-link-salary",
+      "asp": "A8.net",
+      "categories": ["nenshu", "career"]
+    }
+  ],
+  "schools": [
+    {
+      "name": "テックキャンプ",
+      "url": "#affiliate-link-techcamp",
+      "asp": "A8.net",
+      "categories": ["career", "shinsotsu"]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+---
+import '../styles/global.css';
+import Header from './components/Header.astro';
+import Footer from './components/Footer.astro';
+import SEOHead from './components/SEOHead.astro';
+import Breadcrumb from './components/Breadcrumb.astro';
+import TableOfContents from './components/TableOfContents.astro';
+import AgentCTA from './components/affiliate/AgentCTA.astro';
+import SalarySurvey from './components/affiliate/SalarySurvey.astro';
+
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { entry, headings } = Astro.props;
+const { title, description, date, updated, category, tags, author, dataSource, affiliate, ogImage } = entry.data;
+
+const formattedDate = date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+const formattedUpdated = updated?.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const categoryLabels: Record<string, string> = {
+  tenshoku: '転職',
+  saiyo: '採用',
+  nenshu: '年収',
+  career: 'キャリア',
+  hatarakikata: '働き方',
+  shinsotsu: '新卒採用',
+  koyo: '雇用',
+  worklife: 'ワークライフバランス',
+};
+
+const categoryLabel = categoryLabels[category] ?? category;
+
+const hasTopAffiliate = affiliate.some(a => a.position === 'top');
+const hasMidAffiliate = affiliate.some(a => a.position === 'mid');
+const hasBottomAffiliate = affiliate.some(a => a.position === 'bottom');
+const midAffiliateType = affiliate.find(a => a.position === 'mid')?.type;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    ogImage={ogImage}
+    article={{
+      publishedTime: date.toISOString(),
+      modifiedTime: updated?.toISOString(),
+      author,
+      tags,
+    }}
+  />
+  <!-- 記事構造化データ -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    "author": { "@type": "Organization", "name": author },
+    "datePublished": date.toISOString(),
+    "dateModified": (updated ?? date).toISOString(),
+    "publisher": {
+      "@type": "Organization",
+      "name": "はたらくインサイト",
+      "logo": { "@type": "ImageObject", "url": "https://hatarakuinsight.com/favicon.svg" }
+    },
+    "image": ogImage ? `https://hatarakuinsight.com${ogImage}` : "https://hatarakuinsight.com/og/default.png",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `https://hatarakuinsight.com${Astro.url.pathname}` }
+  })} />
+</head>
+<body class="min-h-screen flex flex-col">
+  <Header />
+  <main class="flex-1">
+    <article class="max-w-2xl mx-auto px-4 py-8">
+
+      <!-- パンくず -->
+      <Breadcrumb items={[
+        { label: categoryLabel, href: `/category/${category}` },
+        { label: title },
+      ]} />
+
+      <!-- カテゴリバッジ -->
+      <div class="mb-3">
+        <a
+          href={`/category/${category}`}
+          class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full no-underline hover:bg-blue-200 transition-colors"
+        >
+          {categoryLabel}
+        </a>
+      </div>
+
+      <!-- タイトル -->
+      <h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight mb-4">{title}</h1>
+
+      <!-- メタ情報 -->
+      <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 mb-6 pb-6 border-b border-slate-200">
+        <time datetime={date.toISOString()}>
+          <span class="mr-1">📅</span>{formattedDate}
+        </time>
+        {formattedUpdated && (
+          <span>
+            <span class="mr-1">🔄</span>更新: {formattedUpdated}
+          </span>
+        )}
+        <span>{author}</span>
+        {dataSource && (
+          <span class="text-xs text-slate-400">データ出典: {dataSource}</span>
+        )}
+      </div>
+
+      <!-- 記事上部アフィリエイト -->
+      {hasTopAffiliate && <AgentCTA />}
+
+      <!-- 目次 -->
+      <TableOfContents headings={headings} />
+
+      <!-- 本文 -->
+      <div class="article-body">
+        <slot />
+      </div>
+
+      <!-- 記事中盤アフィリエイト -->
+      {hasMidAffiliate && midAffiliateType === '年収診断' && <SalarySurvey />}
+      {hasMidAffiliate && midAffiliateType !== '年収診断' && <AgentCTA />}
+
+      <!-- タグ -->
+      {tags.length > 0 && (
+        <div class="mt-8 pt-6 border-t border-slate-200">
+          <p class="text-sm text-slate-500 mb-2 font-medium">関連タグ</p>
+          <div class="flex flex-wrap gap-2">
+            {tags.map(tag => (
+              <a
+                href={`/tag/${tag}`}
+                class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full no-underline hover:bg-slate-200 transition-colors"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- 記事下部アフィリエイト -->
+      {hasBottomAffiliate && (
+        <div class="mt-8">
+          <AgentCTA />
+        </div>
+      )}
+
+    </article>
+  </main>
+  <Footer />
+</body>
+</html>

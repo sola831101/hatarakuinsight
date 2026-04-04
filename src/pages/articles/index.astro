@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const articles = allArticles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categoryLabels: Record<string, string> = {
+  tenshoku: '転職', saiyo: '採用', nenshu: '年収', career: 'キャリア',
+  hatarakikata: '働き方', shinsotsu: '新卒採用', koyo: '雇用', worklife: 'ワークライフバランス',
+};
+---
+
+<BaseLayout title="記事一覧" description="転職・採用・年収・働き方に関するデータ分析記事の一覧">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-slate-800 mb-8">記事一覧</h1>
+    <div class="space-y-4">
+      {articles.map(article => (
+        <a
+          href={`/articles/${article.slug}`}
+          class="flex gap-4 bg-white border border-slate-200 rounded-xl p-4 no-underline hover:shadow-md hover:border-blue-200 transition-all group"
+        >
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-xs bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full shrink-0">
+                {categoryLabels[article.data.category] ?? article.data.category}
+              </span>
+              <time class="text-xs text-slate-400 shrink-0">
+                {article.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </time>
+            </div>
+            <h2 class="font-bold text-slate-800 text-sm md:text-base leading-snug group-hover:text-blue-700 transition-colors">
+              {article.data.title}
+            </h2>
+            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed hidden md:block">
+              {article.data.description}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

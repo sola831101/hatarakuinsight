@@ -1,0 +1,49 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const siteUrl = 'https://hatarakuinsight.com';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": siteUrl },
+    ...items.map((item, i) => ({
+      "@type": "ListItem",
+      "position": i + 2,
+      "name": item.label,
+      ...(item.href ? { "item": `${siteUrl}${item.href}` } : {}),
+    })),
+  ],
+};
+---
+
+<nav aria-label="パンくずリスト" class="text-sm text-slate-500 mb-4">
+  <ol class="flex flex-wrap items-center gap-1">
+    <li>
+      <a href="/" class="hover:text-blue-700 no-underline">ホーム</a>
+    </li>
+    {items.map((item, i) => (
+      <>
+        <li class="text-slate-400" aria-hidden="true">›</li>
+        <li>
+          {item.href && i < items.length - 1 ? (
+            <a href={item.href} class="hover:text-blue-700 no-underline">{item.label}</a>
+          ) : (
+            <span class="text-slate-700 font-medium">{item.label}</span>
+          )}
+        </li>
+      </>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

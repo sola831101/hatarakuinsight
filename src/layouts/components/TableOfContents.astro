@@ -1,0 +1,33 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const h2s = headings.filter(h => h.depth === 2);
+---
+
+{h2s.length > 2 && (
+  <nav class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-8" aria-label="目次">
+    <p class="font-bold text-blue-800 mb-3 text-sm">この記事の目次</p>
+    <ol class="space-y-2">
+      {h2s.map((heading, i) => (
+        <li class="text-sm">
+          <a
+            href={`#${heading.slug}`}
+            class="text-blue-700 hover:text-blue-900 no-underline flex items-start gap-2"
+          >
+            <span class="text-blue-400 font-bold shrink-0">{i + 1}.</span>
+            <span>{heading.text}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

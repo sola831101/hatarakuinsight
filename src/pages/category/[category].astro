@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const categoryLabels: Record<string, string> = {
+  tenshoku: '転職', saiyo: '採用', nenshu: '年収', career: 'キャリア',
+  hatarakikata: '働き方', shinsotsu: '新卒採用', koyo: '雇用', worklife: 'ワークライフバランス',
+};
+
+export async function getStaticPaths() {
+  const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+  const categories = [...new Set(allArticles.map(a => a.data.category))];
+  return categories.map(category => ({
+    params: { category },
+    props: {
+      articles: allArticles
+        .filter(a => a.data.category === category)
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { category } = Astro.params;
+const { articles } = Astro.props;
+const label = categoryLabels[category] ?? category;
+---
+
+<BaseLayout
+  title={`${label}の記事一覧`}
+  description={`${label}に関するデータ分析記事の一覧。転職・採用・年収・働き方の最新動向をわかりやすく解説。`}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex items-center gap-3 mb-8">
+      <h1 class="text-2xl font-bold text-slate-800">{label}</h1>
+      <span class="text-sm text-slate-400">{articles.length}件</span>
+    </div>
+    <div class="space-y-4">
+      {articles.map(article => (
+        <a
+          href={`/articles/${article.slug}`}
+          class="flex gap-4 bg-white border border-slate-200 rounded-xl p-4 no-underline hover:shadow-md hover:border-blue-200 transition-all group"
+        >
+          <div class="flex-1 min-w-0">
+            <time class="text-xs text-slate-400 block mb-1">
+              {article.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+            <h2 class="font-bold text-slate-800 text-sm md:text-base leading-snug group-hover:text-blue-700 transition-colors">
+              {article.data.title}
+            </h2>
+            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed hidden md:block">
+              {article.data.description}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
