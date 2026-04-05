@@ -161,6 +161,23 @@ ${dataContext ? `## 最新データサマリー (参考)\n${dataContext}` : ''}
 }
 
 // ========================================
+// コンテンツのクリーンアップ
+// ========================================
+function cleanContent(content: string): string {
+  // Claudeがfrontmatterをコードブロックで包んだ場合に除去する
+  // パターン1: ```yaml\n---\n...\n---\n``` で始まる場合
+  content = content.replace(/^```(?:yaml|markdown)?\n(---[\s\S]*?---\n)/m, '$1');
+  // パターン2: 末尾に余分な``` がある場合
+  content = content.replace(/\n```\s*$/, '');
+  // パターン3: frontmatterの前に空行やテキストがある場合、---を探して先頭に移動
+  const frontmatterMatch = content.match(/(---[\s\S]*?---\n[\s\S]*)/);
+  if (frontmatterMatch && !content.trimStart().startsWith('---')) {
+    content = frontmatterMatch[1];
+  }
+  return content;
+}
+
+// ========================================
 // ファイル保存
 // ========================================
 function saveArticle(content: string, topic: Topic): string {
@@ -174,7 +191,8 @@ function saveArticle(content: string, topic: Topic): string {
   const filename = `${dateStr}-${topic.id}-${slug}.md`;
   const outPath = path.join(ARTICLES_DIR, filename);
 
-  fs.writeFileSync(outPath, content);
+  const cleaned = cleanContent(content);
+  fs.writeFileSync(outPath, cleaned);
   console.log(`[Save] 記事を保存: ${outPath}`);
 
   return outPath;
